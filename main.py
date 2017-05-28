@@ -1,4 +1,5 @@
 import sys
+import random
 
 
 class Main:
@@ -6,7 +7,7 @@ class Main:
     max_height = 5
     character_alive = True
     character_won = False
-    monster_awake = True # Should be false in production
+    monster_awake = True  # Should be false in production
     monster_awakened = False
     monster_move_per_turn = 2
 
@@ -17,13 +18,13 @@ class Main:
         self.character_position = [0, 0]
 
     def place_monster(self):
-        self.monster_position = [1, 1]
+        self.monster_position = [random.randint(0, self.max_width - 1), random.randint(0, self.max_height - 1)]
 
     def place_trap(self):
-        self.trap_position = [0, 1]
+        self.trap_position = [random.randint(0, self.max_width - 1), random.randint(0, self.max_height - 1)]
 
     def place_flash(self):
-        self.flask_position = [1, 0]
+        self.flask_position = [random.randint(0, self.max_width - 1), random.randint(0, self.max_height - 1)]
 
     def display_menu(self):
         menu_list = ['Start New Game', '[Saved Game]', '[Load Game]', 'Customize Setup', 'Exit']
