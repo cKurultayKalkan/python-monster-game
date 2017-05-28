@@ -7,7 +7,7 @@ class Main:
     max_height = 5
     character_alive = True
     character_won = False
-    monster_awake = True  # Should be false in production
+    monster_awake = False
     monster_awakened = False
     monster_move_per_turn = 2
 
@@ -60,11 +60,22 @@ class Main:
         choice = input('Your Choice: ')
         self.menu_choice(choice)
 
-    def coordinate_collisions(self, coord1, coord2):
+    def collision_check(self):
+        if self.coordinate_collisions('player', 'monster'):
+            self.character_alive = False
+            return True
+        elif self.coordinate_collisions('player', 'flash'):
+            self.character_won = True
+            return True
+        elif self.coordinate_collisions('player', 'trap'):
+            self.monster_awakened = True
+            self.trap_position = [-1, -1]
+            return True
+        return False
 
+    def coordinate_collisions(self, coord1, coord2):
         if coord1 == coord2:
             return None
-
         if coord1 == 'monster':
             first = self.monster_position
         elif coord1 == 'flask':
@@ -92,14 +103,31 @@ class Main:
         else:
             return False
 
+    def start_new_game(self):
+        self.reset_all_settings()
+        self.reset_current_game()
+        self.setup_game()
+
+    def reset_all_settings(self):
+        self.character_alive = True
+        self.monster_awake = False
+        self.character_won = False
+        self.monster_awakened = False
+
+    def setup_game(self):
+        self.place_character()
+        self.place_monster()
+        self.place_trap()
+        self.place_flask()
+        self.draw_grid()
+
     def menu_choice(self, choice):
         try:
             choice = int(choice)
         except ValueError:
             choice = 0
-
         if choice == 1:
-            pass
+            self.start_new_game()
         elif choice == 2:
             pass
         elif choice == 3:
@@ -138,8 +166,3 @@ class Main:
 
 
 monster = Main()
-monster.place_character()
-monster.place_monster()
-monster.place_trap()
-monster.place_flask()
-monster.draw_grid()
