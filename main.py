@@ -12,8 +12,7 @@ class Main:
     monster_move_per_turn = 2
 
     def __init__(self):
-        # self.display_menu()
-        self.reset_current_game()
+        self.display_menu()
 
     def reset_current_game(self):
         self.character_position = [0, 0]
