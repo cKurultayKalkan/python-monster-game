@@ -179,6 +179,18 @@ class Main:
             return False
 
     def draw_grid(self):
+
+        if self.character_won == True:
+            print('You have beaten Monster! Congratulations')
+            choice = input('Press any key to return to menu or press enter to exit')
+            if choice:
+                self.display_menu()
+        elif self.character_alive == False:
+            print('You have been eaten by the Monster')
+            choice = input('Press any key to return to menu or press enter to exit')
+            if choice:
+                self.display_menu()
+
         height = self.max_height
         width = self.max_width
 
@@ -193,14 +205,25 @@ class Main:
                     sys.stdout.write('M')
                 elif char_x == x and char_y == y:
                     sys.stdout.write('X')
-                elif str(self.trap_position[0]) == x and str(self.trap_position[1]) == y:
-                    sys.stdout.write('T')
-                elif str(self.flask_position[0]) == x and str(self.flask_position[1]) == y:
-                    sys.stdout.write('F')
                 else:
                     sys.stdout.write('?')
-
             sys.stdout.write('\r\n')
+
+        print()
+        print('Move using W A S D keys')
+        choice = input('Move:')
+        if self.player_move(choice) == False:
+            print('Not a valid move')
+            self.draw_grid()
+        else:
+            if self.monster_awake == True:
+                self.move_monster()
+            if self.collision_check() == True:
+                if self.monster_awakened == True:
+                    self.monster_awake = True
+                    print('You awake the Monster')
+                    self.monster_awakened = False
+            self.draw_grid()
 
 
 monster = Main()
