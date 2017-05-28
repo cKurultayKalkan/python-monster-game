@@ -12,19 +12,44 @@ class Main:
     monster_move_per_turn = 2
 
     def __init__(self):
-        self.display_menu()
+        # self.display_menu()
+        self.reset_current_game()
+
+    def reset_current_game(self):
+        self.character_position = [0, 0]
+        self.monster_position = [1, 0]
+        self.trap_position = [0, 1]
+        self.flask_position = [1, 1]
 
     def place_character(self):
         self.character_position = [0, 0]
 
     def place_monster(self):
         self.monster_position = [random.randint(0, self.max_width - 1), random.randint(0, self.max_height - 1)]
+        if self.coordinate_collisions('monster', 'player'):
+            self.place_monster()
+        elif self.coordinate_collisions('monster', 'flask'):
+            self.place_monster()
+        elif self.coordinate_collisions('monster', 'trap'):
+            self.place_monster()
 
     def place_trap(self):
         self.trap_position = [random.randint(0, self.max_width - 1), random.randint(0, self.max_height - 1)]
+        if self.coordinate_collisions('trap', 'player'):
+            self.place_trap()
+        elif self.coordinate_collisions('trap', 'flask'):
+            self.place_trap()
+        elif self.coordinate_collisions('trap', 'monster'):
+            self.place_trap()
 
-    def place_flash(self):
+    def place_flask(self):
         self.flask_position = [random.randint(0, self.max_width - 1), random.randint(0, self.max_height - 1)]
+        if self.coordinate_collisions('flask', 'player'):
+            self.place_flask()
+        elif self.coordinate_collisions('flask', 'trap'):
+            self.place_flask()
+        elif self.coordinate_collisions('flask', 'monster'):
+            self.place_flask()
 
     def display_menu(self):
         menu_list = ['Start New Game', '[Saved Game]', '[Load Game]', 'Customize Setup', 'Exit']
@@ -34,6 +59,38 @@ class Main:
             print(str(i) + ' ' + menu_list[i - 1])
         choice = input('Your Choice: ')
         self.menu_choice(choice)
+
+    def coordinate_collisions(self, coord1, coord2):
+
+        if coord1 == coord2:
+            return None
+
+        if coord1 == 'monster':
+            first = self.monster_position
+        elif coord1 == 'flask':
+            first = self.flask_position
+        elif coord1 == 'trap':
+            first = self.trap_position
+        elif coord1 == 'player':
+            first = self.character_position
+        else:
+            return None
+
+        if coord2 == 'monster':
+            second = self.monster_position
+        elif coord2 == 'flask':
+            second = self.flask_position
+        elif coord2 == 'trap':
+            second = self.trap_position
+        elif coord2 == 'player':
+            second = self.character_position
+        else:
+            return None
+
+        if first[0] == second[0] and first[1] == second[1]:
+            return True
+        else:
+            return False
 
     def menu_choice(self, choice):
         try:
@@ -84,5 +141,5 @@ monster = Main()
 monster.place_character()
 monster.place_monster()
 monster.place_trap()
-monster.place_flash()
+monster.place_flask()
 monster.draw_grid()
