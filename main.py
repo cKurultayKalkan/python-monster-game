@@ -63,18 +63,18 @@ class Main:
         if self.coordinate_collisions('player', 'monster'):
             self.character_alive = False
             return True
-        elif self.coordinate_collisions('player', 'flash'):
+        elif self.coordinate_collisions('player', 'flask'):
             self.character_won = True
             return True
         elif self.coordinate_collisions('player', 'trap'):
             self.monster_awakened = True
             self.trap_position = [-1, -1]
             return True
+
         return False
 
     def coordinate_collisions(self, coord1, coord2):
-        if coord1 == coord2:
-            return None
+
         if coord1 == 'monster':
             first = self.monster_position
         elif coord1 == 'flask':
@@ -84,6 +84,9 @@ class Main:
         elif coord1 == 'player':
             first = self.character_position
         else:
+            return None
+
+        if coord1 == coord2:
             return None
 
         if coord2 == 'monster':
@@ -119,6 +122,10 @@ class Main:
         self.place_trap()
         self.place_flask()
         self.draw_grid()
+
+    def create_setup(self):
+        self.reset_all_settings()
+        print('This option lets you est the settings for Monster')
 
     def menu_choice(self, choice):
         try:
@@ -199,7 +206,6 @@ class Main:
             move_left = move_left - 1
 
     def draw_grid(self):
-
         if self.character_won == True:
             print('You have beaten Monster! Congratulations')
             choice = input('Press any key to return to menu or press enter to exit')
@@ -210,44 +216,44 @@ class Main:
             choice = input('Press any key to return to menu or press enter to exit')
             if choice:
                 self.display_menu()
-
-        height = self.max_height
-        width = self.max_width
-
-        for y in range(0, height):
-            for x in range(0, width):
-                y = str(y)
-                x = str(x)
-                char_x = str(self.character_position[0])
-                char_y = str(self.character_position[1])
-                if str(self.monster_position[0]) == x and str(
-                        self.monster_position[1]) == y:  # and self.monster_awake == True:
-                    sys.stdout.write('M')
-                elif str(self.trap_position[0]) == x and str(self.trap_position[1]) == y:
-                    sys.stdout.write('T')
-                elif str(self.flask_position[0]) == x and str(self.flask_position[1]) == y:
-                    sys.stdout.write('F')
-                elif char_x == x and char_y == y:
-                    sys.stdout.write('X')
-                else:
-                    sys.stdout.write('?')
-            sys.stdout.write('\r\n')
-
-        print()
-        print('Move using W A S D keys')
-        choice = input('Move:')
-        if self.player_move(choice) == False:
-            print('Not a valid move')
-            self.draw_grid()
         else:
-            if self.monster_awake == True:
-                self.move_monster()
-            if self.collision_check() == True:
-                if self.monster_awakened == True:
-                    self.monster_awake = True
-                    print('You awake the Monster')
-                    self.monster_awakened = False
-            self.draw_grid()
+            height = self.max_height
+            width = self.max_width
+
+            for y in range(0, height):
+                for x in range(0, width):
+                    y = str(y)
+                    x = str(x)
+                    char_x = str(self.character_position[0])
+                    char_y = str(self.character_position[1])
+                    if str(self.monster_position[0]) == x and str(
+                            self.monster_position[1]) == y:  # and self.monster_awake == True:
+                        sys.stdout.write('M')
+                    elif str(self.trap_position[0]) == x and str(self.trap_position[1]) == y:
+                        sys.stdout.write('T')
+                    elif str(self.flask_position[0]) == x and str(self.flask_position[1]) == y:
+                        sys.stdout.write('F')
+                    elif char_x == x and char_y == y:
+                        sys.stdout.write('X')
+                    else:
+                        sys.stdout.write('?')
+                sys.stdout.write('\r\n')
+
+            print()
+            print('Move using W A S D keys')
+            choice = input('Move:')
+            if self.player_move(choice) == False:
+                print('Not a valid move')
+                self.draw_grid()
+            else:
+                if self.monster_awake == True:
+                    self.move_monster()
+                if self.collision_check() == True:
+                    if self.monster_awakened == True:
+                        self.monster_awake = True
+                        print('You awake the Monster')
+                        self.monster_awakened = False
+                self.draw_grid()
 
 
 monster = Main()
