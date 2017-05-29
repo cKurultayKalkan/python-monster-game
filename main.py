@@ -126,7 +126,7 @@ class Main:
 
     def create_setup(self):
         self.reset_all_settings()
-        print('This option lets you est the settings for Monster')
+        print('This option lets you set the settings for Monster')
         width_choice = input('How wide do you want the game board to be? (Default: 5): ')
         try:
             width_choice = int(width_choice)
