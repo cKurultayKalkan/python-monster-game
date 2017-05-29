@@ -12,6 +12,7 @@ class Main:
     monster_move_per_turn = 2
 
     def __init__(self):
+        self.reset_current_game()
         self.display_menu()
 
     def reset_current_game(self):
@@ -126,6 +127,27 @@ class Main:
     def create_setup(self):
         self.reset_all_settings()
         print('This option lets you est the settings for Monster')
+        width_choice = input('How wide do you want the game board to be? (Default: 5): ')
+        try:
+            width_choice = int(width_choice)
+        except ValueError:
+            width_choice = 5
+        self.max_width = width_choice
+        height_choice = input('How high do you want the game board to be? (Default: 5): ')
+        try:
+            height_choice = int(height_choice)
+        except ValueError:
+            height_choice = 5
+        self.max_height = height_choice
+
+        monster_move_count_choice = input(
+            'How many moves should the monster get, for each of your moves? (Default: 2): ')
+        try:
+            monster_move_count_choice = int(monster_move_count_choice)
+        except ValueError:
+            monster_move_count_choice = 2
+        self.monster_move_per_turn = monster_move_count_choice
+        self.start_new_game()
 
     def menu_choice(self, choice):
         try:
@@ -139,7 +161,7 @@ class Main:
         elif choice == 3:
             pass
         elif choice == 4:
-            pass
+            self.create_setup()
         elif choice == 5:
             sys.exit(0)
         else:
