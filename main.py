@@ -258,12 +258,12 @@ class Main:
                     elif char_x == x and char_y == y:
                         sys.stdout.write('X')
                     else:
-                        sys.stdout.write('?')
+                        sys.stdout.write('*')
                 sys.stdout.write('\r\n')
 
             print()
             print('Move using W A S D keys')
-            choice = input('Move:')
+            choice = str(input('Move:'))
             if self.player_move(choice) == False:
                 print('Not a valid move')
                 self.draw_grid()
